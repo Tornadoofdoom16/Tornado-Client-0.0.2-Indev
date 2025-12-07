@@ -1,6 +1,6 @@
 package net.example.infiniteaura.modules;
 
-import net.example.infiniteaura.InfiniteAuraSettings;
+import net.example.infiniteaura.TornadoClientSettings;
 import net.example.infiniteaura.client.Module;
 import net.example.infiniteaura.client.ModuleManager;
 import net.minecraft.entity.EquipmentSlot;
@@ -11,7 +11,7 @@ import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
 
 public class PVPBot extends Module {
-    private final InfiniteAuraSettings settings = InfiniteAuraSettings.INSTANCE;
+    private final TornadoClientSettings settings = TornadoClientSettings.INSTANCE;
     private enum CombatMode { SWORD, MACE_AERIAL, CRYSTAL, CART, IDLE }
     private CombatMode currentMode = CombatMode.IDLE;
     

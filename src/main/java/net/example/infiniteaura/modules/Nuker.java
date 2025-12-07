@@ -1,6 +1,6 @@
 package net.example.infiniteaura.modules;
 
-import net.example.infiniteaura.InfiniteAuraSettings;
+import net.example.infiniteaura.TornadoClientSettings;
 import net.example.infiniteaura.client.Module;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Nuker extends Module {
-    private final InfiniteAuraSettings settings = InfiniteAuraSettings.INSTANCE;
+    private final TornadoClientSettings settings = TornadoClientSettings.INSTANCE;
 
     @Override
     public void onTick() {

@@ -1,11 +1,11 @@
 package net.example.infiniteaura.modules;
 
-import net.example.infiniteaura.InfiniteAuraSettings;
+import net.example.infiniteaura.TornadoClientSettings;
 import net.example.infiniteaura.client.Module;
 import net.minecraft.item.Items;
 
 public class LowTotemAlert extends Module {
-    private final InfiniteAuraSettings settings = InfiniteAuraSettings.INSTANCE;
+    private final TornadoClientSettings settings = TornadoClientSettings.INSTANCE;
     private boolean hasAlerted = false;
 
     @Override

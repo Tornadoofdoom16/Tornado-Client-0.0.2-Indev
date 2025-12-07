@@ -1,6 +1,6 @@
 package net.example.infiniteaura.modules;
 
-import net.example.infiniteaura.InfiniteAuraSettings;
+import net.example.infiniteaura.TornadoClientSettings;
 import net.example.infiniteaura.client.Module;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,7 +9,7 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
 
 public class AntiMace extends Module {
-    private final InfiniteAuraSettings settings = InfiniteAuraSettings.INSTANCE;
+    private final TornadoClientSettings settings = TornadoClientSettings.INSTANCE;
 
     @Override
     public void onTick() {

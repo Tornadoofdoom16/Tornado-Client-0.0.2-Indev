@@ -16,7 +16,7 @@ public class TornadoClient implements ClientModInitializer {
     private static KeyBinding toggleKey, uiKey, maceKey, swordKey, singleStrikeKey;
     
     // References
-    private final InfiniteAuraSettings settings = InfiniteAuraSettings.INSTANCE;
+    private final TornadoClientSettings settings = TornadoClientSettings.INSTANCE;
     private final ModuleManager moduleManager = ModuleManager.INSTANCE;
 
     @Override
@@ -33,7 +33,7 @@ public class TornadoClient implements ClientModInitializer {
             if (client.player == null || client.world == null) return;
 
             // Handle Input
-            while (uiKey.wasPressed()) client.setScreen(new InfiniteAuraScreen(client.currentScreen));
+            while (uiKey.wasPressed()) client.setScreen(new TornadoClientScreen(client.currentScreen));
             
             while (toggleKey.wasPressed()) {
                 settings.enabled = !settings.enabled;

@@ -1,6 +1,6 @@
 package net.example.infiniteaura.modules;
 
-import net.example.infiniteaura.InfiniteAuraSettings;
+import net.example.infiniteaura.TornadoClientSettings;
 import net.example.infiniteaura.client.Module;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +12,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 public class ElytraMace extends Module {
-    private final InfiniteAuraSettings settings = InfiniteAuraSettings.INSTANCE;
+    private final TornadoClientSettings settings = TornadoClientSettings.INSTANCE;
     
     // States
     private boolean isLaunching = false;

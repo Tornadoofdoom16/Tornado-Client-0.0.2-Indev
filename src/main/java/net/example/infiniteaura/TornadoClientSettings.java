@@ -3,8 +3,8 @@ package net.example.infiniteaura;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InfiniteAuraSettings {
-    public static final InfiniteAuraSettings INSTANCE = new InfiniteAuraSettings();
+public class TornadoClientSettings {
+    public static final TornadoClientSettings INSTANCE = new TornadoClientSettings();
 
     // Toggles
     public boolean enabled = false;
@@ -55,5 +55,5 @@ public class InfiniteAuraSettings {
     public List<String> targetList = new ArrayList<>();
     public List<String> friendsList = new ArrayList<>(); 
 
-    private InfiniteAuraSettings() {}
+    private TornadoClientSettings() {}
 }

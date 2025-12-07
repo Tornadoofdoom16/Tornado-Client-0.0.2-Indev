@@ -1,6 +1,6 @@
 package net.example.infiniteaura.modules;
 
-import net.example.infiniteaura.InfiniteAuraSettings;
+import net.example.infiniteaura.TornadoClientSettings;
 import net.example.infiniteaura.client.Module;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Trapper extends Module {
-    private final InfiniteAuraSettings settings = InfiniteAuraSettings.INSTANCE;
+    private final TornadoClientSettings settings = TornadoClientSettings.INSTANCE;
 
     @Override
     public void onTick() {

@@ -1,6 +1,6 @@
 package net.example.infiniteaura.modules;
 
-import net.example.infiniteaura.InfiniteAuraSettings;
+import net.example.infiniteaura.TornadoClientSettings;
 import net.example.infiniteaura.client.Module;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.entity.Entity;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PearlBot extends Module {
-    private final InfiniteAuraSettings settings = InfiniteAuraSettings.INSTANCE;
+    private final TornadoClientSettings settings = TornadoClientSettings.INSTANCE;
     
     // Map of Owner Name -> Trapdoor Position
     private final Map<String, BlockPos> trackedPearls = new HashMap<>();

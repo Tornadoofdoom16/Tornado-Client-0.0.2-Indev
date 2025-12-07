@@ -7,15 +7,15 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import java.util.List;
 
-public class InfiniteAuraScreen extends Screen {
+public class TornadoClientScreen extends Screen {
     private final Screen parent;
-    private final InfiniteAuraSettings settings = InfiniteAuraSettings.INSTANCE;
+    private final TornadoClientSettings settings = TornadoClientSettings.INSTANCE;
     private TextFieldWidget listInput;
     private TextFieldWidget botNameInput;
     private boolean editingFriends = false;
 
-    public InfiniteAuraScreen(Screen parent) {
-        super(Text.of("Infinite Aura Config"));
+    public TornadoClientScreen(Screen parent) {
+        super(Text.of("Tornado Client Config"));
         this.parent = parent;
     }
 
