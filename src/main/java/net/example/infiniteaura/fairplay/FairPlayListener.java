@@ -14,6 +14,8 @@ public class FairPlayListener {
     private final DefenseCoordinator coordinator;
     private final RateLimiter rateLimiter;
     private final boolean enabled;
+    // Track recent senders (senderHash -> lastSeenMs) for passive-respect mode
+    private final java.util.Map<String, Long> recentSenders = new java.util.HashMap<>();
     
     public FairPlayListener(DefenseCoordinator coordinator, boolean enabled) {
         this.coordinator = coordinator;
@@ -29,6 +31,7 @@ public class FairPlayListener {
      */
     public boolean onSignalReceived(FairPlaySignal signal) {
         if (!enabled) {
+            System.out.println(String.format("[FairPlay][%d] Listener disabled, ignoring signal: %s", System.currentTimeMillis(), signal));
             return false;
         }
         
@@ -47,7 +50,31 @@ public class FairPlayListener {
         DefensePlan plan = DefenseMapper.mapSignalToDefense(signal, isSpamming);
         
         // 4. Coordinate activation
-        return coordinator.proposeActivation(plan);
+        boolean accepted = coordinator.proposeActivation(plan);
+        long recvLogTs = System.currentTimeMillis();
+        System.out.println(String.format("[FairPlay][%d] Signal received from %s -> accepted=%s, plan=%s", recvLogTs, signal.senderHash, accepted, plan.defenseType.id));
+        try {
+            if (accepted) {
+                // Record sender as recently seen
+                if (signal.senderHash != null && !signal.senderHash.isEmpty()) {
+                    recentSenders.put(signal.senderHash, recvLogTs);
+                }
+            } else {
+                // If rejected, record reception with accepted=false
+                FairPlayInstrumentation.getInstance().recordReception(signal.nonce, recvLogTs, false);
+            }
+        } catch (Exception ignored) {}
+        return accepted;
+    }
+
+    /**
+     * Check if a sender should be respected (i.e., was seen recently).
+     */
+    public boolean isSenderRecent(String senderHash, long ttlMs) {
+        if (senderHash == null) return false;
+        Long ts = recentSenders.get(senderHash);
+        if (ts == null) return false;
+        return System.currentTimeMillis() - ts <= ttlMs;
     }
     
     /**

@@ -1,6 +1,7 @@
 package net.example.infiniteaura.client;
 
 import net.example.infiniteaura.modules.*;
+import net.example.infiniteaura.fairplay.FairPlayModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,10 @@ public class ModuleManager {
     public LegitKillAura legitKillAura;
     public ElytraMace elytraMace; // NEW
     public PVPBot pvpBot;         // NEW
+    public ClickTP clickTP;
+    public DoorTP doorTP;
+    // FairPlay subsystem
+    public FairPlayModule fairPlayModule;
 
     private ModuleManager() {
         infiniteAura = new InfiniteAura();
@@ -53,6 +58,15 @@ public class ModuleManager {
         legitKillAura = new LegitKillAura();
         elytraMace = new ElytraMace(); // NEW
         pvpBot = new PVPBot();         // NEW
+        clickTP = new ClickTP();
+        doorTP = new DoorTP();
+
+        // FairPlay module (not a "Module" subclass, separate lifecycle)
+        fairPlayModule = new FairPlayModule();
+        // Enable by default so opt-in announcer/listener are active in-client
+        try {
+            fairPlayModule.enable();
+        } catch (Exception ignored) {}
 
         modules.add(infiniteAura);
         modules.add(autoTotem);
@@ -74,11 +88,16 @@ public class ModuleManager {
         modules.add(legitKillAura);
         modules.add(elytraMace); // NEW
         modules.add(pvpBot);     // NEW
+        modules.add(clickTP);
+        modules.add(doorTP);
     }
 
     public void onTick() {
         for (Module module : modules) {
             module.onTick();
         }
+
+        // Tick the fairplay subsystem each client tick so listeners prune and act
+        if (fairPlayModule != null) fairPlayModule.onTick();
     }
 }

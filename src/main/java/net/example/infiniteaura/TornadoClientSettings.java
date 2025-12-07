@@ -44,6 +44,20 @@ public class TornadoClientSettings {
     public boolean baritoneBot = false;
     public boolean useTargetList = false;
 
+    // Teleport utilities
+    public boolean clickTp = false;
+    public int clickTpRange = 70; // server-limited, default safe
+    public boolean doorTp = false;
+    public int doorTpRange = 70;
+
+    // FairPlay
+    public boolean fairPlayEnabled = true; // enabled by default for testing loopback
+    public boolean fairPlayNetworkEmit = false; // send chat-based signals to server when enabled
+    public boolean fairPlayTelemetry = true; // show telemetry logs
+    // Respect-mode: skip targets who announced FairPlay recently
+    public boolean fairPlayRespectSignals = false; // OFF by default
+    public long fairPlayRespectTtlMs = 500L; // default TTL 500ms
+
     public String alertBotName = "BotNameHere"; 
     
     public int delayTicks = 10;

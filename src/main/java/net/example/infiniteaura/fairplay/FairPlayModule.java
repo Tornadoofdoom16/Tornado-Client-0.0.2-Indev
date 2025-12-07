@@ -1,5 +1,7 @@
 package net.example.infiniteaura.fairplay;
 
+import net.example.infiniteaura.TornadoClientSettings;
+
 /**
  * FairPlay Module: Cooperative handshake protocol for opt-in defense.
  * 
@@ -82,10 +84,18 @@ public class FairPlayModule {
      * 
      * Call this from packet handlers or mixin hooks.
      */
-    public void onSignalReceived(FairPlaySignal signal) {
-        if (!config.fairPlayEnabled) return;
-        
-        config.getListener().onSignalReceived(signal);
+    public boolean onSignalReceived(FairPlaySignal signal) {
+        if (!config.fairPlayEnabled) return false;
+
+        return config.getListener().onSignalReceived(signal);
+    }
+
+    /**
+     * Return true if a sender should be respected (recently announced).
+     */
+    public boolean shouldRespectSender(String senderHash) {
+        if (senderHash == null) return false;
+        return config.getListener().isSenderRecent(senderHash, TornadoClientSettings.INSTANCE.fairPlayRespectTtlMs);
     }
     
     /**

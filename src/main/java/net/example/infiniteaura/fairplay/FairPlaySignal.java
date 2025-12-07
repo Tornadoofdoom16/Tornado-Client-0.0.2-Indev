@@ -63,6 +63,28 @@ public class FairPlaySignal {
         this.emittedAtMs = System.currentTimeMillis();
         this.senderHash = senderHash;
     }
+
+    /**
+     * Construct a signal using a known nonce and emitted timestamp. Used when
+     * recreating signals received over the network.
+     */
+    public FairPlaySignal(
+        ActionType actionType,
+        long urgencyWindowMs,
+        boolean fairPlayMode,
+        String version,
+        String senderHash,
+        String nonce,
+        long emittedAtMs
+    ) {
+        this.actionType = actionType;
+        this.urgencyWindowMs = urgencyWindowMs;
+        this.fairPlayMode = fairPlayMode;
+        this.version = version;
+        this.nonce = (nonce == null || nonce.isEmpty()) ? UUID.randomUUID().toString().substring(0, 8) : nonce;
+        this.emittedAtMs = emittedAtMs <= 0 ? System.currentTimeMillis() : emittedAtMs;
+        this.senderHash = senderHash;
+    }
     
     /**
      * Validates signal format, recency, and integrity.

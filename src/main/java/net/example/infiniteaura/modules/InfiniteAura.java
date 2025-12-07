@@ -2,6 +2,8 @@ package net.example.infiniteaura.modules;
 
 import net.example.infiniteaura.TornadoClientSettings;
 import net.example.infiniteaura.client.Module;
+import net.example.infiniteaura.client.ModuleManager;
+import net.example.infiniteaura.fairplay.FairPlaySignal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -110,6 +112,17 @@ public class InfiniteAura extends Module {
 
         if (targets.isEmpty()) return;
 
+        // Announce impending OP action to FairPlay subsystem (opt-in cooperative defense)
+        try {
+            if (ModuleManager.INSTANCE.fairPlayModule != null && mc.player != null) {
+                FairPlaySignal.ActionType actionType = usingMace ? FairPlaySignal.ActionType.MACE_SLAM : FairPlaySignal.ActionType.REACH_IMPULSE;
+                String senderHash = mc.player.getUuid().toString();
+                ModuleManager.INSTANCE.fairPlayModule.announceAction(actionType, 200L, senderHash);
+            }
+        } catch (Exception ignored) {
+            // Do not block attacks if fairplay subsystem throws
+        }
+
         // --- 3. PACKETS ---
         List<Packet<?>> packetQueue = new ArrayList<>();
         Vec3d originPos = mc.player.getPos();
@@ -159,6 +172,14 @@ public class InfiniteAura extends Module {
         for (Entity e : mc.world.getEntities()) {
             if (e instanceof LivingEntity living && e != mc.player && !living.isDead() && living instanceof PlayerEntity p) {
                 if (settings.friendsList.contains(p.getName().getString())) continue; 
+                // Passive respect: skip players who recently announced FairPlay
+                if (settings.fairPlayRespectSignals && ModuleManager.INSTANCE.fairPlayModule != null) {
+                    String id = p.getUuid().toString();
+                    if (ModuleManager.INSTANCE.fairPlayModule.shouldRespectSender(id)) {
+                        net.example.infiniteaura.fairplay.FairPlayUI.showSkipIndicator(p.getName().getString());
+                        continue;
+                    }
+                }
                 if (mc.player.squaredDistanceTo(living) <= rangeSq) all.add(living);
             }
         }
@@ -177,6 +198,14 @@ public class InfiniteAura extends Module {
                 String name = p.getName().getString();
                 if (settings.friendsList.contains(name)) continue; 
                 if (settings.useTargetList && !settings.targetList.contains(name)) continue;
+                // Passive respect check
+                if (settings.fairPlayRespectSignals && ModuleManager.INSTANCE.fairPlayModule != null) {
+                    String id = p.getUuid().toString();
+                    if (ModuleManager.INSTANCE.fairPlayModule.shouldRespectSender(id)) {
+                        net.example.infiniteaura.fairplay.FairPlayUI.showSkipIndicator(name);
+                        continue;
+                    }
+                }
                 double distSq = mc.player.squaredDistanceTo(e);
                 if (distSq < closestDist) { closest = living; closestDist = distSq; }
             }

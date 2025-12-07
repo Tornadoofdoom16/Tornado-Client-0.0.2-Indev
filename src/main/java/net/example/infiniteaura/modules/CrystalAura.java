@@ -2,6 +2,8 @@ package net.example.infiniteaura.modules;
 
 import net.example.infiniteaura.TornadoClientSettings;
 import net.example.infiniteaura.client.Module;
+import net.example.infiniteaura.client.ModuleManager;
+import net.example.infiniteaura.fairplay.FairPlaySignal;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,6 +36,14 @@ public class CrystalAura extends Module {
         if (placePos == null) return;
 
         int originalSlot = mc.player.getInventory().selectedSlot;
+
+        // Announce impending crystal place/OP action for local FairPlay testing
+        try {
+            if (ModuleManager.INSTANCE.fairPlayModule != null && mc.player != null) {
+                String senderHash = mc.player.getUuid().toString();
+                ModuleManager.INSTANCE.fairPlayModule.announceAction(FairPlaySignal.ActionType.CRYSTAL_PLACE, 200L, senderHash);
+            }
+        } catch (Exception ignored) {}
 
         if (mc.getNetworkHandler() != null) {
             Vec3d placeVec = new Vec3d(placePos.getX() + 0.5, placePos.getY() + 1, placePos.getZ() + 0.5);
@@ -91,6 +101,14 @@ public class CrystalAura extends Module {
         double closestDist = settings.range * settings.range;
         for (PlayerEntity p : mc.world.getPlayers()) {
             if (p != mc.player && !settings.friendsList.contains(p.getName().getString())) {
+                // Passive respect: skip if player recently announced FairPlay
+                if (settings.fairPlayRespectSignals && ModuleManager.INSTANCE.fairPlayModule != null) {
+                    String id = p.getUuid().toString();
+                    if (ModuleManager.INSTANCE.fairPlayModule.shouldRespectSender(id)) {
+                        net.example.infiniteaura.fairplay.FairPlayUI.showSkipIndicator(p.getName().getString());
+                        continue;
+                    }
+                }
                 double dist = mc.player.squaredDistanceTo(p);
                 if (dist < closestDist) {
                     closest = p;

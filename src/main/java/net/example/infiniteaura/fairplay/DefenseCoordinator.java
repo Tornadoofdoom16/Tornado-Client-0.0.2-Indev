@@ -48,8 +48,21 @@ public class DefenseCoordinator {
             plan.defenseType,
             System.currentTimeMillis() + plan.defenseType.cooldownMs
         );
-        
+
         telemetry("ACTIVATE: " + plan);
+
+        // Instrumentation: record activation timestamp for RTT analysis
+        try {
+            if (plan != null && plan.triggeringSignal != null && plan.triggeringSignal.nonce != null) {
+                FairPlayInstrumentation.getInstance().recordActivation(plan.triggeringSignal.nonce, plan.activatedAtMs);
+            }
+        } catch (Exception ignored) {}
+
+        // Execute the defense action on the client thread (non-blocking here)
+        try {
+            FairPlayDefenseExecutor.execute(plan);
+        } catch (Exception ignored) {}
+
         return true;
     }
     
