@@ -1,0 +1,28 @@
+# Gradle
+.gradle/
+build/
+out/
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+*.log
+*.ctxt
+
+# Local env
+local.properties

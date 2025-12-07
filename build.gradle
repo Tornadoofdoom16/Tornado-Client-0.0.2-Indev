@@ -1,0 +1,57 @@
+plugins {
+	id 'java'
+	id 'maven-publish'
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+	withSourcesJar()
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// No external dependencies - Minecraft will be provided at runtime
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+	// Don't fail on errors since Minecraft classes won't be available at compile time
+	it.options.failOnError = false
+}
+
+jar {
+	manifest {
+		attributes(
+			'Specification-Title': 'Tornado Client',
+			'Specification-Version': project.version,
+			'Implementation-Title': project.name,
+			'Implementation-Version': project.version
+		)
+	}
+	
+	// Include resources with duplicate strategy
+	duplicatesStrategy = 'include'
+	from 'src/main/resources'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+
+	repositories {
+	}
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "infiniteaura",
+  "version": "1.0.0",
+  "name": "Infinite Aura Standalone",
+  "description": "Standalone Infinite Aura with Mace Logic",
+  "authors": ["You"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/modid/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.example.infiniteaura.TornadoClient"
+    ]
+  },
+  "mixins": [
+    "infiniteaura.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "minecraft": "~1.21",
+    "java": ">=21"
+  }
+}
